@@ -101,6 +101,21 @@ Supported conversions
   ASTORE 1
 ```
 
+### Nullable type to nullable subtype
+
+Note: No change in bytecode for this case!
+
+```diff
+ val o1: Any? = someFunction()
+-val o2: String? = o1 as String?
++val o2: String? = o1.unsafeCast<String?>()
+```
+```diff
+ ALOAD 0
+ CHECKCAST java/lang/String
+ ASTORE 1
+```
+
 
 Usage
 -----

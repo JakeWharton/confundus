@@ -154,6 +154,45 @@ class ConfundusCompilerTest(private val useIr: Boolean) {
       |""".trimMargin())
   }
 
+  @Test fun nullableToNullableSubtype() {
+    val result = compile("""
+      import com.jakewharton.confundus.unsafeCast
+
+      fun subject(o: Any?): String? {
+        return o.unsafeCast<String?>()
+      }
+
+      fun test() = buildString {
+        appendln(subject("hey")?.length)
+        appendln(subject(null)?.length)
+      }
+    """.trimIndent())
+
+    assertThat(result.exitCode).isEqualTo(ExitCode.OK)
+    val mainKt = result.generatedClassFile("MainKt")
+    assertThat(mainKt.methodBytecode("subject")).isEqualTo("""
+      // access flags 0x19
+      public final static subject(Ljava/lang/Object;)Ljava/lang/String;
+      @Lorg/jetbrains/annotations/Nullable;() // invisible
+        // annotable parameter count: 1 (invisible)
+        @Lorg/jetbrains/annotations/Nullable;() // invisible, parameter 0
+       L0
+        LINENUMBER 4 L0
+        ALOAD 0
+        CHECKCAST java/lang/String
+        ARETURN
+       L1
+        LOCALVARIABLE o Ljava/lang/Object; L0 L1 0
+        MAXSTACK = 1
+        MAXLOCALS = 1
+    """.trimIndent())
+
+    assertThat(mainKt.method("test").invoke(null)).isEqualTo("""
+      |3
+      |null
+      |""".trimMargin())
+  }
+
   private fun compile(@Language("kotlin") source: String): Result {
     return KotlinCompilation().apply {
       sources = listOf(SourceFile.kotlin("main.kt", source))
