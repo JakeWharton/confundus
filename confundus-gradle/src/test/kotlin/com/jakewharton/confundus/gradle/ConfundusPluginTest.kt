@@ -16,7 +16,7 @@ class ConfundusPluginTest {
     val result = GradleRunner.create()
         .withProjectDir(fixtureDir)
         .withPluginClasspath()
-        .withArguments("clean", "compileKotlin", "--stacktrace")
+        .withArguments("clean", "compileKotlin", "compileTestKotlin", "--stacktrace")
         .build()
     assertThat(result.output).contains("BUILD SUCCESSFUL")
   }
@@ -29,7 +29,12 @@ class ConfundusPluginTest {
     val result = GradleRunner.create()
         .withProjectDir(fixtureDir)
         .withPluginClasspath()
-        .withArguments("clean", "compileKotlinJvm", "compileKotlinJvm2", "--stacktrace")
+        .withArguments(
+            "clean",
+            "compileKotlinJvm", "compileTestKotlinJvm",
+            "compileKotlinJvm2", "compileTestKotlinJvm2",
+            "--stacktrace"
+        )
         .build()
     assertThat(result.output).contains("BUILD SUCCESSFUL")
   }
