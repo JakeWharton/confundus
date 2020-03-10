@@ -131,6 +131,9 @@ apply plugin: 'org.jetbrains.kotlin.jvm' // or .multiplatform
 apply plugin: 'com.jakewharton.confundus'
 ```
 
+The `unsafeCast` API will be made available in your main and test source sets but will not be
+shipped as a dependency of the module.
+
 
 License
 =======
