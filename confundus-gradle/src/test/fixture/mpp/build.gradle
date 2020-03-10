@@ -1,0 +1,24 @@
+buildscript {
+  repositories {
+    maven {
+      url "file://${projectDir.absolutePath}/../../../../../build/localMaven"
+    }
+  }
+}
+
+plugins {
+  id 'org.jetbrains.kotlin.multiplatform'
+  id 'com.jakewharton.confundus'
+}
+
+repositories {
+  maven {
+    url "file://${projectDir.absolutePath}/../../../../../build/localMaven"
+  }
+  mavenCentral()
+}
+
+kotlin {
+  jvm()
+  targetFromPreset(presets.jvm, 'jvm2')
+}

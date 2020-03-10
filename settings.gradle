@@ -1,0 +1,3 @@
+include ':confundus-api'
+include ':confundus-compiler'
+include ':confundus-gradle'
