@@ -22,7 +22,7 @@ conversion. You'll get a `NullPointerException` from `!!` when the reference is 
 `IFNONNULL` bytecode, even if the Kotlin type is already non-null! Both of these behaviors are
 desired because they help maintain Kotlin's type system at runtime.
  
-When writing performance-sensitive code these runtime-checks can sometimes have a prohibitive cost.
+When writing performance-sensitive code these runtime checks can sometimes have a prohibitive cost.
 
 For example, in a doubly-linked structure, invariants mean that if `self.next` is non-null then
 `self.next.prev` is also non-null. These `next` and `prev` properties are _required_ to be marked as
@@ -80,6 +80,8 @@ Supported conversions
   ASTORE 1
 ```
 
+Note: The `CHECKCAST` bytecode is required by the VM otherwise it will produce a `VerifyError`.
+
 ### Nullable to non-null subtype
 
 ```diff
@@ -100,6 +102,8 @@ Supported conversions
   CHECKCAST java/lang/String
   ASTORE 1
 ```
+
+Note: The `CHECKCAST` bytecode is required by the VM otherwise it will produce a `VerifyError`.
 
 ### Nullable to nullable subtype
 
