@@ -47,8 +47,8 @@ Supported conversions
 
 ```diff
  val o1: String? = someFunction()
--val o2 = o1!!
-+val o2 = o1.unsafeCast<String>()
+-val o2: String = o1!!
++val o2: String = o1.unsafeCast<String>()
 ```
 ```diff
   ALOAD 0
@@ -59,12 +59,12 @@ Supported conversions
   ASTORE 1
 ```
 
-### Non-null type to non-null subtype
+### Non-null to non-null subtype
 
 ```diff
  val o1: Any = someFunction()
--val o2 = o1 as String
-+val o2 = o1.unsafeCast<String>()
+-val o2: String = o1 as String
++val o2: String = o1.unsafeCast<String>()
 ```
 ```diff
   ALOAD 0
@@ -80,12 +80,12 @@ Supported conversions
   ASTORE 1
 ```
 
-### Nullable type to non-null subtype
+### Nullable to non-null subtype
 
 ```diff
  val o1: Any? = someFunction()
--val o2 = o1 as String
-+val o2 = o1.unsafeCast<String>()
+-val o2: String = o1 as String
++val o2: String = o1.unsafeCast<String>()
 ```
 ```diff
   ALOAD 0
@@ -101,7 +101,7 @@ Supported conversions
   ASTORE 1
 ```
 
-### Nullable type to nullable subtype
+### Nullable to nullable subtype
 
 Note: No change in bytecode for this case!
 
