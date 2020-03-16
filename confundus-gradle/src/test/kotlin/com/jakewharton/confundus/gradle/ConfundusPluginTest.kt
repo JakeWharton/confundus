@@ -1,9 +1,9 @@
 package com.jakewharton.confundus.gradle
 
 import com.google.common.truth.Truth.assertThat
-import java.io.File
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.Test
+import java.io.File
 
 class ConfundusPluginTest {
   private val fixturesDir = File("src/test/fixture")
@@ -21,6 +21,7 @@ class ConfundusPluginTest {
     assertThat(result.output).contains("BUILD SUCCESSFUL")
   }
 
+//  @Ignore("IR backend crashes in a lowering. Try again with 1.4 then report bug if persists.")
   @Test fun jvmIr() {
     val fixtureDir = File(fixturesDir, "jvm-ir")
     val gradleRoot = File(fixtureDir, "gradle").also { it.mkdir() }
