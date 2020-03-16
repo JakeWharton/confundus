@@ -21,6 +21,19 @@ class ConfundusPluginTest {
     assertThat(result.output).contains("BUILD SUCCESSFUL")
   }
 
+  @Test fun jvmIr() {
+    val fixtureDir = File(fixturesDir, "jvm-ir")
+    val gradleRoot = File(fixtureDir, "gradle").also { it.mkdir() }
+    File("../gradle/wrapper").copyRecursively(File(gradleRoot, "wrapper"), true)
+
+    val result = GradleRunner.create()
+        .withProjectDir(fixtureDir)
+        .withPluginClasspath()
+        .withArguments("clean", "compileKotlin", "compileTestKotlin", "--stacktrace")
+        .build()
+    assertThat(result.output).contains("BUILD SUCCESSFUL")
+  }
+
   @Test fun mpp() {
     val fixtureDir = File(fixturesDir, "mpp")
     val gradleRoot = File(fixtureDir, "gradle").also { it.mkdir() }

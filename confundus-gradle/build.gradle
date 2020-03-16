@@ -15,7 +15,7 @@ tasks.getByName('pluginUnderTestMetadata').
     from(configurations.fixtureClasspath)
 
 dependencies {
-  implementation deps.kotlin.stdlib
+  implementation deps.kotlin.stdlib.jdk
   compileOnly gradleApi()
   compileOnly deps.kotlin.gradlePlugin
   kapt deps.autoService.compiler

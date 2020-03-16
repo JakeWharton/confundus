@@ -1,0 +1,25 @@
+buildscript {
+  repositories {
+    maven {
+      url "file://${projectDir.absolutePath}/../../../../../build/localMaven"
+    }
+  }
+}
+
+plugins {
+  id 'org.jetbrains.kotlin.jvm'
+  id 'com.jakewharton.confundus'
+}
+
+repositories {
+  maven {
+    url "file://${projectDir.absolutePath}/../../../../../build/localMaven"
+  }
+  mavenCentral()
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+  kotlinOptions {
+    useIR = true
+  }
+}

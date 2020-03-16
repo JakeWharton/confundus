@@ -6,7 +6,11 @@ buildscript {
 
   ext.deps = [
       'kotlin': [
-          'stdlib': "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
+          'stdlib': [
+              'common': "org.jetbrains.kotlin:kotlin-stdlib-common:${versions.kotlin}",
+              'jdk': "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
+              'js': "org.jetbrains.kotlin:kotlin-stdlib-js:${versions.kotlin}"
+          ],
           'embeddableCompiler': "org.jetbrains.kotlin:kotlin-compiler-embeddable:${versions.kotlin}",
           'gradlePlugin' : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
           'gradlePluginApi': "org.jetbrains.kotlin:kotlin-gradle-plugin-api:${versions.kotlin}",

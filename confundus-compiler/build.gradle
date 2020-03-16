@@ -3,7 +3,7 @@ apply plugin: 'org.jetbrains.kotlin.kapt'
 apply from: "$rootDir/gradle/publish.gradle"
 
 dependencies {
-  implementation deps.kotlin.stdlib
+  implementation deps.kotlin.stdlib.jdk
 
   compileOnly deps.kotlin.embeddableCompiler
   testImplementation deps.kotlin.embeddableCompiler
