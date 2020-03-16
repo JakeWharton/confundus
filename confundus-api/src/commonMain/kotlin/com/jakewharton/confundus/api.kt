@@ -1,5 +1,3 @@
-@file:JvmName("Api")
-
 package com.jakewharton.confundus
 
 /**
@@ -30,5 +28,4 @@ package com.jakewharton.confundus
  *
  * Note: This function will never actually be invoked and will be removed by the compiler plugin.
  */
-@Suppress("unused")
-fun <T> Any?.unsafeCast(): T = throw AssertionError()
+expect fun <T> Any?.unsafeCast(): T
