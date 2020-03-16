@@ -13,7 +13,6 @@ class ConfundusComponentRegistrar : ComponentRegistrar {
     configuration: CompilerConfiguration
   ) {
     ClassBuilderInterceptorExtension.registerExtension(
-        project, ConfundusClassBuilderInterceptorExtension()
-    )
+        project, ConfundusClassBuilderInterceptorExtension)
   }
 }

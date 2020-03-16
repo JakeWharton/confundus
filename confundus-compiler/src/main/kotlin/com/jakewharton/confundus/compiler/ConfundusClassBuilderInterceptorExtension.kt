@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.resolve.jvm.diagnostics.JvmDeclarationOrigin
 import org.jetbrains.org.objectweb.asm.MethodVisitor
 import org.jetbrains.org.objectweb.asm.Opcodes
 
-internal class ConfundusClassBuilderInterceptorExtension : ClassBuilderInterceptorExtension {
+internal object ConfundusClassBuilderInterceptorExtension : ClassBuilderInterceptorExtension {
   override fun interceptClassBuilderFactory(
     interceptedFactory: ClassBuilderFactory,
     bindingContext: BindingContext,
