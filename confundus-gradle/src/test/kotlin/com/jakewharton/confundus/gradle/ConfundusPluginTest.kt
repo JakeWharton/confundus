@@ -8,6 +8,8 @@ import org.junit.Test
 class ConfundusPluginTest {
   private val fixturesDir = File("src/test/fixture")
 
+  private fun versionProperty() = "-PconfundusVersion=$confundusVersion"
+
   @Test fun jvm() {
     val fixtureDir = File(fixturesDir, "jvm")
     val gradleRoot = File(fixtureDir, "gradle").also { it.mkdir() }
@@ -15,8 +17,9 @@ class ConfundusPluginTest {
 
     val result = GradleRunner.create()
         .withProjectDir(fixtureDir)
-        .withPluginClasspath()
-        .withArguments("clean", "compileKotlin", "compileTestKotlin", "--stacktrace")
+        .withArguments(
+            "clean", "compileKotlin", "compileTestKotlin", "--stacktrace", versionProperty()
+        )
         .build()
     assertThat(result.output).contains("BUILD SUCCESSFUL")
   }
@@ -28,8 +31,9 @@ class ConfundusPluginTest {
 
     val result = GradleRunner.create()
         .withProjectDir(fixtureDir)
-        .withPluginClasspath()
-        .withArguments("clean", "compileKotlin", "compileTestKotlin", "--stacktrace")
+        .withArguments(
+            "clean", "compileKotlin", "compileTestKotlin", "--stacktrace", versionProperty()
+        )
         .build()
     assertThat(result.output).contains("BUILD SUCCESSFUL")
   }
@@ -41,12 +45,11 @@ class ConfundusPluginTest {
 
     val result = GradleRunner.create()
         .withProjectDir(fixtureDir)
-        .withPluginClasspath()
         .withArguments(
             "clean",
             "compileKotlinJvm", "compileTestKotlinJvm",
             "compileKotlinJvm2", "compileTestKotlinJvm2",
-            "--stacktrace"
+            "--stacktrace", versionProperty()
         )
         .build()
     assertThat(result.output).contains("BUILD SUCCESSFUL")
