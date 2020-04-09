@@ -3,25 +3,12 @@ apply plugin: 'org.jetbrains.kotlin.kapt'
 apply plugin: 'java-gradle-plugin'
 apply from: "$rootDir/gradle/publish.gradle"
 
-configurations {
-  fixtureClasspath
-}
-
-// Append any extra dependencies to the test fixtures via a custom configuration classpath. This
-// allows us to apply additional plugins in a fixture while still leveraging dependency resolution
-// and de-duplication semantics.
-tasks.getByName('pluginUnderTestMetadata').
-    getPluginClasspath().
-    from(configurations.fixtureClasspath)
-
 dependencies {
   implementation deps.kotlin.stdlib.jdk
   compileOnly gradleApi()
   compileOnly deps.kotlin.gradlePlugin
   kapt deps.autoService.compiler
   compileOnly deps.autoService.annotations
-
-  fixtureClasspath deps.kotlin.gradlePlugin
 
   testImplementation deps.junit
   testImplementation deps.truth
@@ -42,6 +29,7 @@ gradlePlugin {
 test {
   dependsOn(':confundus-api:installArchives')
   dependsOn(':confundus-compiler:installArchives')
+  dependsOn(':confundus-gradle:installArchives')
 }
 
 def versionDirectory = "$buildDir/generated/version/"
