@@ -1,18 +1,22 @@
+@file:OptIn(ExperimentalCompilerApi::class)
+
 package com.jakewharton.confundus.compiler
 
-import com.google.common.truth.Truth.assertThat
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import com.tschuchort.compiletesting.CompilationResult
+import com.tschuchort.compiletesting.JvmCompilationResult
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.KotlinCompilation.ExitCode
-import com.tschuchort.compiletesting.KotlinCompilation.Result
 import com.tschuchort.compiletesting.SourceFile
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.lang.reflect.Method
 import org.intellij.lang.annotations.Language
+import org.jetbrains.kotlin.compiler.plugin.AbstractCliOption
+import org.jetbrains.kotlin.compiler.plugin.CommandLineProcessor
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
-import org.junit.runners.Parameterized.Parameters
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.MethodVisitor
@@ -20,14 +24,7 @@ import org.objectweb.asm.Opcodes.ASM7
 import org.objectweb.asm.util.Textifier
 import org.objectweb.asm.util.TraceMethodVisitor
 
-@RunWith(Parameterized::class)
-class ConfundusCompilerTest(private val useIr: Boolean) {
-  companion object {
-    @JvmStatic
-    @Parameters(name = "useIr={0}")
-    fun parameters() = arrayOf(true, false)
-  }
-
+class ConfundusCompilerTest {
   @Test fun nullableToNonNull() {
     val result = compile("""
       import com.jakewharton.confundus.unsafeCast
@@ -94,7 +91,7 @@ class ConfundusCompilerTest(private val useIr: Boolean) {
        L0
         ALOAD 0
         LDC "o"
-        INVOKESTATIC kotlin/jvm/internal/Intrinsics.checkParameterIsNotNull (Ljava/lang/Object;Ljava/lang/String;)V
+        INVOKESTATIC kotlin/jvm/internal/Intrinsics.checkNotNullParameter (Ljava/lang/Object;Ljava/lang/String;)V
        L1
         LINENUMBER 4 L1
         ALOAD 0
@@ -193,17 +190,21 @@ class ConfundusCompilerTest(private val useIr: Boolean) {
       |""".trimMargin())
   }
 
-  private fun compile(@Language("kotlin") source: String): Result {
+  private fun compile(@Language("kotlin") source: String): JvmCompilationResult {
     return KotlinCompilation().apply {
       sources = listOf(SourceFile.kotlin("main.kt", source))
       messageOutputStream = System.out
-      compilerPlugins = listOf(ConfundusComponentRegistrar())
+      compilerPluginRegistrars = listOf(ConfundusCompilerPluginRegistrar())
+      commandLineProcessors = listOf(object : CommandLineProcessor {
+        override val pluginId get() = ""
+        override val pluginOptions get() = emptySet<AbstractCliOption>()
+      })
       inheritClassPath = true
-      useIR = useIr
+      useIR = true
     }.compile()
   }
 
-  private fun Result.generatedClassFile(name: String): ClassFile {
+  private fun JvmCompilationResult.generatedClassFile(name: String): ClassFile {
     val suffix = "$name.class"
     val bytes = generatedFiles.single { it.endsWith(suffix) }.readBytes()
     val cls = classLoader.loadClass(name)
