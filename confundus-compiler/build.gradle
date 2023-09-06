@@ -1,19 +1,22 @@
 apply plugin: 'org.jetbrains.kotlin.jvm'
 apply plugin: 'org.jetbrains.kotlin.kapt'
-apply from: "$rootDir/gradle/publish.gradle"
+apply plugin: 'com.vanniktech.maven.publish'
+apply plugin: 'org.jetbrains.dokka'
 
 dependencies {
-  implementation deps.kotlin.stdlib.jdk
+  compileOnly libs.kotlin.compiler
 
-  compileOnly deps.kotlin.embeddableCompiler
-  testImplementation deps.kotlin.embeddableCompiler
+  kapt libs.autoService.compiler
+  compileOnly libs.autoService.annotations
 
-  kapt deps.autoService.compiler
-  compileOnly deps.autoService.annotations
-
-  testImplementation deps.junit
-  testImplementation deps.truth
-  testImplementation deps.kotlinCompileTesting
-  testImplementation deps.asmUtil
+  testImplementation libs.kotlin.stdlib
+  testImplementation libs.junit
+  testImplementation libs.assertk
+  testImplementation libs.kotlinCompilerTester
+  testImplementation libs.asm.util
   testImplementation project(':confundus-api')
+}
+
+tasks.named('dokkaHtml').configure {
+  it.dependsOn(tasks.named('kaptKotlin'))
 }

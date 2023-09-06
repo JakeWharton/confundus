@@ -1,28 +1,8 @@
 apply plugin: 'org.jetbrains.kotlin.multiplatform'
+apply plugin: 'com.vanniktech.maven.publish'
+apply plugin: 'org.jetbrains.dokka'
 
 kotlin {
-  js()
+  js().nodejs()
   jvm()
-
-  sourceSets {
-    commonMain {
-      dependencies {
-        api deps.kotlin.stdlib.common
-      }
-    }
-    jsMain {
-      dependencies {
-        api deps.kotlin.stdlib.js
-      }
-    }
-    jvmMain {
-      dependencies {
-        api deps.kotlin.stdlib.jdk
-      }
-    }
-  }
 }
-
-// The plugin has to be applied to the end of the file because otherwise it does not see complete
-// set of files for a platform. https://github.com/vanniktech/gradle-maven-publish-plugin/issues/122
-apply from: "$rootDir/gradle/publish.gradle"

@@ -1,17 +1,15 @@
 apply plugin: 'org.jetbrains.kotlin.jvm'
-apply plugin: 'org.jetbrains.kotlin.kapt'
 apply plugin: 'java-gradle-plugin'
-apply from: "$rootDir/gradle/publish.gradle"
+apply plugin: 'com.vanniktech.maven.publish'
+apply plugin: 'org.jetbrains.dokka'
+apply plugin: 'com.github.gmazzo.buildconfig'
 
 dependencies {
-  implementation deps.kotlin.stdlib.jdk
   compileOnly gradleApi()
-  compileOnly deps.kotlin.gradlePlugin
-  kapt deps.autoService.compiler
-  compileOnly deps.autoService.annotations
+  compileOnly libs.kotlin.gradlePlugin
 
-  testImplementation deps.junit
-  testImplementation deps.truth
+  testImplementation libs.junit
+  testImplementation libs.assertk
   testImplementation gradleTestKit()
 }
 
@@ -27,32 +25,17 @@ gradlePlugin {
 }
 
 test {
-  dependsOn(':confundus-api:installArchives')
-  dependsOn(':confundus-compiler:installArchives')
-  dependsOn(':confundus-gradle:installArchives')
+  dependsOn(':confundus-api:publishAllPublicationsToTestMavenRepository')
+  dependsOn(':confundus-compiler:publishAllPublicationsToTestMavenRepository')
+  dependsOn(':confundus-gradle:publishAllPublicationsToTestMavenRepository')
 }
 
-def versionDirectory = "$buildDir/generated/version/"
-
-sourceSets {
-  main.java.srcDir versionDirectory
-}
-
-task pluginVersion {
-  def outputDir = file(versionDirectory)
-
-  inputs.property 'version', project.version
-  outputs.dir outputDir
-
-  doLast {
-    def versionFile = file("$outputDir/com/jakewharton/confundus/gradle/version.kt")
-    versionFile.parentFile.mkdirs()
-    versionFile.text = """// Generated file. Do not edit!
-package com.jakewharton.confundus.gradle
-
-internal const val confundusVersion = "${project.version}"
-"""
+buildConfig {
+  useKotlinOutput {
+    internalVisibility = true
+    topLevelConstants = true
   }
-}
 
-tasks.getByName('compileKotlin').dependsOn('pluginVersion')
+  packageName('com.jakewharton.confundus.gradle')
+  buildConfigField("String", "ConfundusVersion", "\"$version\"")
+}
