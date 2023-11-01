@@ -200,7 +200,6 @@ class ConfundusCompilerTest {
         override val pluginOptions get() = emptySet<AbstractCliOption>()
       })
       inheritClassPath = true
-      useIR = true
     }.compile()
   }
 
