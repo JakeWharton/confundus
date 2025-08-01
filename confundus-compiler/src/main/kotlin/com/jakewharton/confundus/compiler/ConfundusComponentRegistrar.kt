@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
+import org.jetbrains.kotlin.config.CommonConfigurationKeys
 import org.jetbrains.kotlin.config.CompilerConfiguration
 
 @OptIn(ExperimentalCompilerApi::class)
@@ -15,7 +16,7 @@ class ConfundusCompilerPluginRegistrar : CompilerPluginRegistrar() {
 
   override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
     val messageCollector = configuration.get(
-      CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY,
+      CommonConfigurationKeys.MESSAGE_COLLECTOR_KEY,
       MessageCollector.NONE
     )
     IrGenerationExtension.registerExtension(ConfundusIrGenerationExtension(messageCollector))

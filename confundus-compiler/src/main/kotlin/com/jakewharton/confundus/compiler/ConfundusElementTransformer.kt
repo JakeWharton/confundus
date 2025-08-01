@@ -34,7 +34,7 @@ class ConfundusElementTransformer(
         type = expression.type,
         operator = IrTypeOperator.IMPLICIT_CAST,
         typeOperand = expression.type,
-        argument = expression.extensionReceiver!!,
+        argument = expression.arguments[0]!!,
       )
     }
     return super.visitCall(expression)

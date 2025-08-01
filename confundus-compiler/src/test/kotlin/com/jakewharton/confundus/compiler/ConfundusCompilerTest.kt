@@ -34,11 +34,11 @@ class ConfundusCompilerTest {
       }
 
       fun test() = buildString {
-        appendln(subject("hey").length)
+        append(subject("hey").length)
         try {
           throw AssertionError(subject(null).length)
         } catch (e: NullPointerException) {
-          appendln("NPE")
+          append("NPE")
         }
       }
     """.trimIndent())
@@ -61,10 +61,7 @@ class ConfundusCompilerTest {
         MAXLOCALS = 1
     """.trimIndent())
 
-    assertThat(mainKt.method("test").invoke(null)).isEqualTo("""
-      |3
-      |NPE
-      |""".trimMargin())
+    assertThat(mainKt.method("test").invoke(null)).isEqualTo("3NPE")
   }
 
   @Test fun nonNullToSubtype() {
@@ -76,7 +73,7 @@ class ConfundusCompilerTest {
       }
 
       fun test() = buildString {
-        appendln(subject("hey").length)
+        append(subject("hey").length)
       }
     """.trimIndent())
 
@@ -103,9 +100,7 @@ class ConfundusCompilerTest {
         MAXLOCALS = 1
     """.trimIndent())
 
-    assertThat(mainKt.method("test").invoke(null)).isEqualTo("""
-      |3
-      |""".trimMargin())
+    assertThat(mainKt.method("test").invoke(null)).isEqualTo("3")
   }
 
   @Test fun nullableToNonNullSubtype() {
@@ -117,11 +112,11 @@ class ConfundusCompilerTest {
       }
 
       fun test() = buildString {
-        appendln(subject("hey").length)
+        append(subject("hey").length)
         try {
           throw AssertionError(subject(null).length)
         } catch (e: NullPointerException) {
-          appendln("NPE")
+          append("NPE")
         }
       }
     """.trimIndent())
@@ -145,10 +140,7 @@ class ConfundusCompilerTest {
         MAXLOCALS = 1
     """.trimIndent())
 
-    assertThat(mainKt.method("test").invoke(null)).isEqualTo("""
-      |3
-      |NPE
-      |""".trimMargin())
+    assertThat(mainKt.method("test").invoke(null)).isEqualTo("3NPE")
   }
 
   @Test fun nullableToNullableSubtype() {
@@ -160,8 +152,8 @@ class ConfundusCompilerTest {
       }
 
       fun test() = buildString {
-        appendln(subject("hey")?.length)
-        appendln(subject(null)?.length)
+        append(subject("hey")?.length)
+        append(subject(null)?.length)
       }
     """.trimIndent())
 
@@ -184,10 +176,7 @@ class ConfundusCompilerTest {
         MAXLOCALS = 1
     """.trimIndent())
 
-    assertThat(mainKt.method("test").invoke(null)).isEqualTo("""
-      |3
-      |null
-      |""".trimMargin())
+    assertThat(mainKt.method("test").invoke(null)).isEqualTo("3null")
   }
 
   private fun compile(@Language("kotlin") source: String): JvmCompilationResult {
