@@ -1,5 +1,4 @@
-Confundus: Unsafe Cast for Kotlin/JVM
-=====================================
+# Confundus: Unsafe Cast for Kotlin/JVM
 
 A Kotlin compiler plugin which brings Kotlin/JS's `unsafeCast` to Kotlin/JVM.
 
@@ -8,8 +7,7 @@ a nullable reference as non-nullable or a type as a subtype without the overhead
 regular check.
 
 
-Okay but why?
--------------
+## Okay but why?
 
 Sometimes you know more than the compiler. If you know a nullable reference is actually non-null
 you can use `!!` for a non-null reference. If you know an `Any` is actually a `String` you can cast
@@ -21,7 +19,7 @@ conversion. You'll get a `NullPointerException` from `!!` when the reference is 
 `TypeCastException` from `as String` because Kotlin checks the reference is non-null using that
 `IFNONNULL` bytecode, even if the Kotlin type is already non-null! Both of these behaviors are
 desired because they help maintain Kotlin's type system at runtime.
- 
+
 When writing performance-sensitive code these runtime checks can sometimes have a prohibitive cost.
 
 For example, in a doubly-linked structure, invariants mean that if `self.next` is non-null then
@@ -40,8 +38,7 @@ been measured to produce overhead and reclaim that performance at the expense of
 you go back to the reduced safety of Java.
 
 
-Supported conversions
----------------------
+## Supported conversions
 
 ### Nullable to non-null type
 
@@ -121,13 +118,12 @@ Note: No change in bytecode for this case!
 ```
 
 
-Usage
------
+## Usage
 
 ```groovy
 buildscript {
   dependencies {
-    classpath 'com.jakewharton.confundus:confundus-gradle:1.0.0'
+    classpath 'com.jakewharton.confundus:confundus-gradle:1.1.0'
   }
 }
 
@@ -138,9 +134,44 @@ apply plugin: 'com.jakewharton.confundus'
 The `unsafeCast` API will be made available in your main and test source sets but will not be
 shipped as a dependency of the module.
 
+<details>
+<summary>Snapshots of the development version are available in the Central Portal Snapshots repository.</summary>
+<p>
 
-License
-=======
+```groovy
+buildscript {
+  repositories {
+    mavenCentral()
+    maven {
+      url 'https://central.sonatype.com/repository/maven-snapshots/'
+    }
+  }
+  dependencies {
+    classpath 'com.jakewharton.confundus:confundus-gradle:1.2.0-SNAPSHOT'
+  }
+}
+
+apply plugin: 'org.jetbrains.kotlin.jvm' // or .multiplatform
+apply plugin: 'com.jakewharton.confundus'
+```
+
+</p>
+</details>
+
+### Compatibility
+
+Since Kotlin compiler plugins are an unstable API, certain versions of Cite only work with
+certain versions of Kotlin.
+
+| Kotlin        | Confundus |
+|---------------|-----------|
+| 2.0.0 - 2.2.0 | 1.1.0     |
+| 1.3.70        | 1.0.0     |
+
+Kotlin versions newer than those listed may be supported but have not been tested.
+
+
+# License
 
     Copyright 2020 Jake Wharton
 
