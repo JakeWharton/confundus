@@ -1,13 +1,9 @@
 apply plugin: 'org.jetbrains.kotlin.jvm'
-apply plugin: 'org.jetbrains.kotlin.kapt'
 apply plugin: 'com.vanniktech.maven.publish'
 apply plugin: 'org.jetbrains.dokka'
 
 dependencies {
   compileOnly libs.kotlin.compiler
-
-  kapt libs.autoService.compiler
-  compileOnly libs.autoService.annotations
 
   testImplementation libs.kotlin.stdlib
   testImplementation libs.junit
