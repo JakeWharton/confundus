@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+
 buildscript {
   dependencies {
     classpath libs.kotlin.gradlePlugin
@@ -19,4 +22,15 @@ repositories {
     url "file://${projectDir.absolutePath}/../../../../../build/testMaven"
   }
   mavenCentral()
+}
+
+tasks.withType(JavaCompile).configureEach { task ->
+  task.sourceCompatibility = '1.8'
+  task.targetCompatibility = '1.8'
+}
+
+tasks.withType(KotlinJvmCompile).configureEach { task ->
+  task.compilerOptions {
+    jvmTarget = JvmTarget.JVM_1_8
+  }
 }
