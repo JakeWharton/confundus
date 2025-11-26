@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
 @OptIn(ExperimentalCompilerApi::class)
 class ConfundusCompilerPluginRegistrar : CompilerPluginRegistrar() {
   override val supportsK2: Boolean get() = true
+  override val pluginId: String get() = "com.jakewharton.confundus"
 
   override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
     val messageCollector = configuration.get(
