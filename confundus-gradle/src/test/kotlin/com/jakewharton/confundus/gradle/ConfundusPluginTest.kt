@@ -26,12 +26,7 @@ class ConfundusPluginTest(
   }
 
   private fun createRunner(fixtureDir: File): GradleRunner {
-    val gradleRoot = File(fixtureDir, "gradle").also { it.mkdir() }
-    File("../gradle/wrapper").copyRecursively(File(gradleRoot, "wrapper"), true)
-    val androidSdkFile = File("local.properties")
-    if (androidSdkFile.exists()) {
-      androidSdkFile.copyTo(File(fixtureDir, "local.properties"), overwrite = true)
-    }
+    File("../gradle").copyRecursively(File(fixtureDir, "gradle"), true)
     return GradleRunner.create()
       .apply {
         if (gradleVersion != LATEST_GRADLE_VERSION) {
