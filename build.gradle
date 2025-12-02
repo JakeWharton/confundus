@@ -23,6 +23,15 @@ subprojects {
     mavenCentral()
   }
 
+  tasks.withType(Test).configureEach {
+    testLogging {
+      if (System.getenv("CI") == "true") {
+        events = ["failed", "skipped", "passed"]
+      }
+      exceptionFormat "full"
+    }
+  }
+
   plugins.withId('com.gradleup.tapmoc') {
     tapmoc {
       checkApiDependencies(Severity.ERROR)
