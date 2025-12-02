@@ -16,3 +16,9 @@ dependencies {
 tasks.named('dokkaHtml').configure {
   it.dependsOn(tasks.named('kaptKotlin'))
 }
+
+apply plugin: 'com.gradleup.tapmoc'
+tapmoc {
+  java(8)
+  kotlin('2.2.0')
+}

@@ -1,5 +1,4 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+import tapmoc.Severity
 
 buildscript {
   dependencies {
@@ -7,6 +6,7 @@ buildscript {
     classpath libs.gradleMavenPublishPlugin
     classpath libs.dokkaPlugin
     classpath libs.buildConfigPlugin
+    classpath libs.compatPlugin
   }
 
   repositories {
@@ -23,14 +23,10 @@ subprojects {
     mavenCentral()
   }
 
-  tasks.withType(JavaCompile).configureEach { task ->
-    task.sourceCompatibility = '1.8'
-    task.targetCompatibility = '1.8'
-  }
-
-  tasks.withType(KotlinJvmCompile).configureEach { task ->
-    task.compilerOptions {
-      jvmTarget = JvmTarget.JVM_1_8
+  plugins.withId('com.gradleup.tapmoc') {
+    tapmoc {
+      checkApiDependencies(Severity.ERROR)
+      checkRuntimeDependencies(Severity.ERROR)
     }
   }
 
