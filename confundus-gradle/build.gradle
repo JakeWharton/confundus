@@ -10,6 +10,7 @@ dependencies {
 
   testImplementation libs.junit
   testImplementation libs.assertk
+  testImplementation libs.testParameterInjector
   testImplementation gradleTestKit()
 }
 
@@ -30,12 +31,34 @@ test {
   dependsOn(':confundus-gradle:publishAllPublicationsToTestMavenRepository')
 }
 
+// HEY! If you update the minimum-supported Gradle version check to see if the Kotlin language version or
+// Java targets below can be bumped. See https://docs.gradle.org/current/userguide/compatibility.html.
+def minimumGradleVersion = '9.0'
+configurations.apiElements {
+  attributes {
+    attribute(
+      GradlePluginApiVersion.GRADLE_PLUGIN_API_VERSION_ATTRIBUTE,
+      objects.named(GradlePluginApiVersion, minimumGradleVersion),
+    )
+  }
+}
+
+apply plugin: 'com.gradleup.tapmoc'
+tapmoc {
+  java(17)
+  kotlin('2.2.0')
+}
+
 buildConfig {
   useKotlinOutput {
+    packageName = 'com.jakewharton.confundus.gradle'
     internalVisibility = true
     topLevelConstants = true
   }
 
-  packageName('com.jakewharton.confundus.gradle')
   buildConfigField("String", "ConfundusVersion", "\"$version\"")
+
+  sourceSets.getByName('test') {
+    buildConfigField(String, 'MINIMUM_GRADLE_VERSION', minimumGradleVersion)
+  }
 }
