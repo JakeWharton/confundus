@@ -34,8 +34,7 @@ subprojects {
 
   plugins.withId('com.gradleup.tapmoc') {
     tapmoc {
-      checkApiDependencies(Severity.ERROR)
-      checkRuntimeDependencies(Severity.ERROR)
+      checkDependencies(Severity.ERROR)
     }
   }
 
