@@ -13,10 +13,6 @@ class ConfundusCompilerPluginRegistrar : CompilerPluginRegistrar() {
   override val pluginId: String get() = "com.jakewharton.confundus"
 
   override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
-    val messageCollector = configuration.get(
-      CommonConfigurationKeys.MESSAGE_COLLECTOR_KEY,
-      MessageCollector.NONE
-    )
-    IrGenerationExtension.registerExtension(ConfundusIrGenerationExtension(messageCollector))
+    IrGenerationExtension.registerExtension(ConfundusIrGenerationExtension())
   }
 }
