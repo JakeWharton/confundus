@@ -3,4 +3,12 @@
   extends: [
     'github>JakeWharton/renovate-config:default.json5'
   ],
+	packageRules: [
+		{
+			packagePatterns: [
+				'^org.gradle.experimental:gradle-public-api',
+			],
+			enabled: false,
+		},
+	],
 }
