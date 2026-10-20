@@ -5,7 +5,7 @@ apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'com.github.gmazzo.buildconfig'
 
 dependencies {
-  compileOnly gradleApi()
+  compileOnly libs.gradle.minimum
   compileOnly libs.kotlin.gradlePlugin
 
   testImplementation libs.junit
@@ -31,9 +31,7 @@ test {
   dependsOn(':confundus-gradle:publishAllPublicationsToTestMavenRepository')
 }
 
-// HEY! If you update the minimum-supported Gradle version check to see if the Kotlin language version or
-// Java targets below can be bumped. See https://docs.gradle.org/current/userguide/compatibility.html.
-def minimumGradleVersion = '9.0'
+def minimumGradleVersion = libs.gradle.minimum.get().version
 configurations.apiElements {
   attributes {
     attribute(
