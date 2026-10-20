@@ -6,6 +6,10 @@ kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler", version.ref
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib" }
 
+# HEY! If you update the minimum-supported Gradle version check to see if the Kotlin language version or
+# Java targets can be bumped. See https://docs.gradle.org/current/userguide/compatibility.html.
+gradle-minimum = "org.gradle.experimental:gradle-public-api:9.0.0"
+
 kotlinCompilerTester = "dev.zacsweers.kctfork:core:0.14.0"
 
 buildConfigPlugin = "com.github.gmazzo.buildconfig:plugin:6.1.2"

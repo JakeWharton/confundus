@@ -21,6 +21,13 @@ subprojects {
 
   repositories {
     mavenCentral()
+    maven {
+      url 'https://repo.gradle.org/gradle/libs-releases'
+      metadataSources {
+        mavenPom()
+        ignoreGradleMetadataRedirection()
+      }
+    }
   }
 
   tasks.withType(Test).configureEach {
